@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deploymen
+metadata:
+  name: msorderservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msorderservice 
+  template:
+    metadata:
+      labels:
+        app: msorderservice
+    spec:
+      containers:
+        - name: msorderservice
+          image: mreas/msorderservice
