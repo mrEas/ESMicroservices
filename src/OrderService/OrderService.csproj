@@ -19,4 +19,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\e.sergeev\source\web\ESMS\src\OrderService\.editorconfig" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msdb-mssql-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msdb-mssql 
+  template:
+    metadata:
+      labels:
+        app: msdb-mssql
+    spec:
+      containers:
+        - name: msdb-mssql
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1433
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: MSSQL_PID
+              value: "Express"
+            - name: MSSQL_SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: SA_PASSWORD
+                  name: msdbpass
+          volumeMounts:
+            - mountPath: /var/mssql/data 
+              name: msdb-mssql
+      volumes:
+        - name: msdb-mssql
+          persistentVolumeClaim:
+            claimName: msorderservice-pvc
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: msdb-mssql-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: msdb-mssql
+  ports:
+    - port: 1433
+      targetPort: 1433
+      protocol: TCP
+      name: msdb-mssql
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: msdb-mssql-loadbalancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: msdb-mssql
+  ports:
+    - port: 1433
+      targetPort: 1433
+      protocol: TCP
+      name: msdb-mssql
+    
