@@ -9,4 +9,5 @@ public interface IPaymentRepository
 	Task<Payment?> GetAsync(Guid id);
 	Task CreateAsync(Payment order);
 	Task DeleteAsync(Guid id);
+	Task<bool> IsPaymentForOrderExist(Guid orderId);
 }

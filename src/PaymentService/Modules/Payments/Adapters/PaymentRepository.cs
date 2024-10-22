@@ -18,10 +18,12 @@ public class PaymentRepository : IPaymentRepository
 
 	public async Task<IEnumerable<Payment>> GetAsync() => await _applicationDataContext.Payments.ToListAsync();
 
-	public async Task<Payment?> GetAsync(Guid id) =>
+    public async Task<bool> IsPaymentForOrderExist(Guid orderId) => await _applicationDataContext.Payments.AnyAsync(x=>x.OrderId == orderId);
+
+    public async Task<Payment?> GetAsync(Guid id) =>
 		await _applicationDataContext.Payments.FirstOrDefaultAsync(x => x.Id == id);
 
-	public async Task CreateAsync(Payment payment) => _applicationDataContext.Payments.AddAsync(payment);
+	public async Task CreateAsync(Payment payment) => await _applicationDataContext.Payments.AddAsync(payment);
 
 	public async Task DeleteAsync(Guid id)
 	{

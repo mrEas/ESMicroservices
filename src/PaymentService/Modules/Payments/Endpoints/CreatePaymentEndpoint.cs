@@ -27,10 +27,21 @@ public static class CreatePaymentEndpoint
                         return Results.ValidationProblem(validationResult.ToDictionary(),
                             statusCode: (int)HttpStatusCode.BadRequest);
                     }
-                    
+
+                    bool isOrderExist = await paymentRepository.IsPaymentForOrderExist(paymentCreateDto.OrderId);
+
+                    if (isOrderExist)
+                    {
+                        var errors = new Dictionary<string, string[]> {{ "Payment", new[] { "Payment for order already exists." } }};
+                        return Results.ValidationProblem(errors,
+                            statusCode: (int)HttpStatusCode.Conflict);
+                    }
+
                     var payment = mapper.Map<Payment>(paymentCreateDto);
+
                     payment.Created = dateTimeService.GetDateTimeNow();
-                    
+                    payment.Status = PaymentStatus.Unpaid;
+
                     await paymentRepository.CreateAsync(payment);
                     await paymentRepository.SaveChangesAsync();
 
