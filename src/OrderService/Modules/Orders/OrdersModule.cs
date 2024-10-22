@@ -2,6 +2,7 @@
 using OrderService.Modules.Common.Ports;
 using OrderService.Modules.Orders.Adapters;
 using OrderService.Modules.Orders.Data;
+using OrderService.Modules.Orders.Endpoints;
 using OrderService.Modules.Orders.Ports;
 
 namespace OrderService.Modules.Orders
@@ -29,7 +30,12 @@ namespace OrderService.Modules.Orders
 
         public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder edpoints)
         {
-            throw new NotImplementedException();
+            edpoints.CreateOrder();
+            edpoints.GetOrders();
+            edpoints.GetOrder();
+            edpoints.DeleteOrder();
+
+            return edpoints;
         }
 
 
