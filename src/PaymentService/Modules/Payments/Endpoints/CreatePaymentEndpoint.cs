@@ -32,7 +32,7 @@ public static class CreatePaymentEndpoint
 
                     if (isOrderExist)
                     {
-                        var errors = new Dictionary<string, string[]> {{ "Payment", new[] { "Payment for order already exists." } }};
+                        var errors = new Dictionary<string, string[]> {{ "Payment", [ "Payment for order already exists."] }};
                         return Results.ValidationProblem(errors,
                             statusCode: (int)HttpStatusCode.Conflict);
                     }

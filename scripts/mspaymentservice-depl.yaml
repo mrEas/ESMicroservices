@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mspaymentservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mspaymentservice 
+  template:
+    metadata:
+      labels:
+        app: mspaymentservice
+    spec:
+      containers:
+        - name: mspaymentservice
+          image: mreas/mspaymentservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mspaymentservice-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: mspaymentservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      name: mspaymentservice

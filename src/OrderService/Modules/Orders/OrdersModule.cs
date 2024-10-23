@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrderService.Modules.Common.Ports;
 using OrderService.Modules.Orders.Adapters;
+using OrderService.Modules.Orders.Adapters.SyncServices;
 using OrderService.Modules.Orders.Data;
 using OrderService.Modules.Orders.Endpoints;
 using OrderService.Modules.Orders.Ports;
+using OrderService.Modules.Orders.Ports.SyncServices;
 
 namespace OrderService.Modules.Orders
 {
@@ -24,6 +26,9 @@ namespace OrderService.Modules.Orders
 
             builder.AddScoped<IOrderRepository, OrderRepository>();
             builder.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
+            builder.Configure<PaymentOptions>(configuration.GetSection(nameof(PaymentOptions)));
+            builder.AddHttpClient<IPaymentDataClient, PaymentDataClient>();
 
             return builder;
         }
