@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 # Обновляем сертификаты
-RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
+#RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificates
 
 # Копируем файл проекта и выполняем восстановление зависимостей
 COPY *.csproj ./

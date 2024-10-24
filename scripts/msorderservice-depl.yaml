@@ -15,3 +15,17 @@ spec:
       containers:
         - name: msorderservice
           image: mreas/msorderservice
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: msorderservice-cluster-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: msorderservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      name: msorderservice
